@@ -34,9 +34,9 @@ public class FavorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //加载系统里面的布局文件
         TextView view = (TextView) View.inflate(getActivity(), android.R.layout.simple_list_item_1, null);
-        view.setText("这是设置页面的碎片布局");
+        view.setText("这是收藏的碎片布局");
         view.setTextColor(Color.argb(1,6,0,0));
-        view.setBackgroundColor(Color.BLACK);
+        view.setBackgroundColor(Color.GRAY);
         return view;
     }
 

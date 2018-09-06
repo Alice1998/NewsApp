@@ -18,21 +18,24 @@
             style="@style/MyRadioStyle"
             android:drawableTop="@drawable/home"
             android:tag="0"
-            android:text="today" />
+            android:text="today"
+            android:background="@color/Alice_blue1"/>
 
         <RadioButton
             android:id="@+id/main_rb1"
             style="@style/MyRadioStyle"
             android:drawableTop="@drawable/favor"
             android:tag="1"
-            android:text="收藏" />
+            android:text="收藏"
+            android:background="@color/Alice_blue2"/>
 
         <RadioButton
             android:id="@+id/main_rb2"
             style="@style/MyRadioStyle"
             android:drawableTop="@drawable/setting"
             android:tag="2"
-            android:text="设置" />
+            android:text="设置"
+            android:background="@color/Alice_blue4"/>
 
 
     </RadioGroup>

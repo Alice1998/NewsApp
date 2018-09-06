@@ -33,6 +33,7 @@ public class HomeFragment extends Fragment implements RadioGroup.OnCheckedChange
         //加载数据
         list.add(new Fragment1());
         list.add(new Fragment2());
+        list.add(new Fragment2());
     }
 
     @Override
@@ -64,7 +65,7 @@ public class HomeFragment extends Fragment implements RadioGroup.OnCheckedChange
 
     //把下划线View设置初始值
     private void initVi() {
-        width = getResources().getDisplayMetrics().widthPixels / 2;
+        width = getResources().getDisplayMetrics().widthPixels / 3;
         //设置下划线View的长度
         FrameLayout.LayoutParams par = new FrameLayout.LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT);
         vi.setLayoutParams(par);
@@ -76,7 +77,19 @@ public class HomeFragment extends Fragment implements RadioGroup.OnCheckedChange
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         //点击后选择对应的ViewPager页面
-        vp.setCurrentItem(checkedId == R.id.home_rb_dujia ? 0 : 1);
+        //vp.setCurrentItem(checkedId == R.id.News_China ? 0 : 1);
+        if(checkedId==R.id.News_China)
+        {
+            vp.setCurrentItem(0);
+            return;
+        }
+        else if(checkedId==R.id.News_Abroad)
+        {
+            vp.setCurrentItem(1);
+        }
+        else
+            vp.setCurrentItem(2);
+
     }
 
     //屏幕滑动的回调方法
@@ -98,7 +111,23 @@ public class HomeFragment extends Fragment implements RadioGroup.OnCheckedChange
     @Override
     public void onPageSelected(int position) {
         //选择页面后设置单选按钮的选择
-        rg.check(position == 0 ? R.id.home_rb_dujia : R.id.home_rb_ticker);
+        switch (position)
+        {
+            case 0:
+                rg.check(R.id.News_China);
+                return;
+            case 1:
+                rg.check(R.id.News_Abroad);
+                return;
+
+            case 2:
+                rg.check(R.id.News_Finance);
+                return;
+
+             default:
+                 rg.check(R.id.News_China);
+
+        }
     }
 
     //这个方法不用理会

@@ -5,6 +5,19 @@
     <color name="colorAccent">#FF4081</color>
     <color name="color_back">#207579</color>
     <color name="color_backnor">#7fdcd9</color>
+
+    <color name="Alice_blue1">#494A8F</color>
+    <color name="Alice_blue2">#585eaa</color>
+    <color name="Alice_blue3">#7F70AA</color>
+    <color name="Alice_blue4">#6F6D85</color>
+
+    <color name="Alice_pink3">#d1c7b7</color>
+    <color name="Alice_pink1">#a1a3a6</color>
+    <color name="Alice_pink2">#999d9c</color>
+
+
+
+
     <color name="backgroundHoloLight">#FFEEEEEE</color>
     <color name="categoryDisabledColor">#44000000</color>
     <color name="categoryDisabledTextColor">#CC000000</color>
