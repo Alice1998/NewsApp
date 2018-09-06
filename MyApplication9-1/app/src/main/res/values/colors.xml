@@ -5,4 +5,12 @@
     <color name="colorAccent">#FF4081</color>
     <color name="color_back">#207579</color>
     <color name="color_backnor">#7fdcd9</color>
+    <color name="backgroundHoloLight">#FFEEEEEE</color>
+    <color name="categoryDisabledColor">#44000000</color>
+    <color name="categoryDisabledTextColor">#CC000000</color>
+    <color name="categoryEnabledColor">#CC000000</color>
+    <color name="categoryEnabledTextColor">#FFBDC7C1</color>
+    <color name="primaryTextDark">#FF000000</color>
+    <color name="newsTitleRead">#FF606060</color>
+    <color name="iconColor">#FF000000</color>
 </resources>

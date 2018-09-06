@@ -19,7 +19,7 @@
             android:button="@null"
             android:gravity="center"
             android:padding="10dp"
-            android:text="旅游度假" />
+            android:text="国内新闻" />
 
         <RadioButton
             android:id="@+id/home_rb_ticker"
@@ -30,7 +30,7 @@
             android:button="@null"
             android:gravity="center"
             android:padding="10dp"
-            android:text="景点门票" />
+            android:text="国际新闻" />
 
     </RadioGroup>
     <!--自定义指示器-->
