@@ -1,7 +1,10 @@
 package com.example.alice.myapplication;
 
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -22,9 +25,6 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     Fragment[] fragments = new Fragment[3];
     //之前选中的页面游标值
     int beforeIndex = -1;
-    public static List<Map<String, String>> haveRead;
-    public static List<Map<String, String>> addFavor;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +38,6 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
                 .detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
                 .penaltyLog().penaltyDeath().build());
 
-
     }
 
     //初始化数据
@@ -48,11 +47,36 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         //为控件设置监听事件
         rg.setOnCheckedChangeListener(this);
         //默认显示主页面的碎片
-        rg.check(R.id.main_rb2);
-        // showFragment(2);
-        haveRead=new ArrayList<>();
-        addFavor=new ArrayList<>();
+        rg.check(R.id.main_rb0);
+        // showFragment(0);
     }
+
+    Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            Bundle data = msg.getData();
+            String val = data.getString("value");
+            Log.i("mylog", "请求结果为-->" + val);
+            // TODO
+            // UI界面的更新等相关操作
+        }
+    };
+
+    Runnable networkTask = new Runnable() {
+
+        @Override
+        public void run() {
+            // TODO
+            // 在这里进行 http request.网络请求相关操作
+            Message msg = new Message();
+            Bundle data = new Bundle();
+            data.putString("value", "请求结果");
+            msg.setData(data);
+            handler.sendMessage(msg);
+        }
+    };
+
 
     //点击对应的按钮后触发的事件
     @Override
@@ -76,16 +100,13 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         //对碎片继续各种操作，这里需要用到事务来完成
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         //隐藏上一次显示的碎片
-        if (beforeIndex != -1) {
+        if (beforeIndex!=-1) {
             ft.hide(fragments[beforeIndex]);
         }
         //如果要出现的碎片页面没有创建过，就要创建；否则显示出来就可以了
         if (fragments[index] == null) {
             //创建碎片（实例化）
             fragments[index] = FragmentFactory.CreateFragment(index);
-            //把创建的布局添加到事务里面
-            //第一个参数是存放碎片的位置
-            //第二个参数是碎片的对象
             ft.add(R.id.main_fl, fragments[index]);
         } else {
             //如不是空的对象就直接显示出来就可以了
@@ -96,6 +117,6 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         //把当前的选择保存
         beforeIndex = index;
 
-
     }
+
 }

@@ -28,26 +28,20 @@ public class FavorFragment extends Fragment implements RefreshListView.LoadListe
     private RefreshListView listview;
     private List<Map<String,String>> list;
     private SimpleAdapter adapter;
+    private int shownitems;
 
-    private String[] theme={"理论文章美在可信又可爱","跨省异地就医直接结算人次突破80万","多地公布蓝天保卫战具体行动计划","专家详解小学入学年龄划定问题：作统一规定不现实","多地出台国有景区降价方案 157个景区门票已降价或免费开放"};
-    private String[] author={"人民网","新华社","北京青年报","腾讯","新浪"};
-    private String[] time={"2018-09-05","2018-09-05","2018-09-05","2018-09-05","2018-09-05"};
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view=inflater.inflate(R.layout.fragment2,container,false);
-        //setContentView(R.layout.activity_main);
         list=new ArrayList<>();
-        for(int j=0;j<4;j++)
-            for (int i=1;i<5;i++){
-                Map<String,String> map=new HashMap<>();
-                map.put("title",theme[i]);
-                map.put("source",author[i]);
-                map.put("time",time[i]);
-                list.add(map);
-            }
-        adapter=new SimpleAdapter(getActivity(),list,R.layout.news_item,new String[]{"title","source","time"},new int[]{R.id.title,R.id.source,R.id.datetime});
+        for(int i=0;i<8&&i<forData.newsFavors.size();i++)
+        {
+            list.add(forData.newsFavors.get(i));
+            shownitems=i;
+        }
+        adapter=new SimpleAdapter(getActivity(),forData.newsFavors,R.layout.news_item,new String[]{"title","source","time"},new int[]{R.id.title,R.id.source,R.id.datetime});
         listview=(RefreshListView)view.findViewById(R.id.list_view);
         listview.setInterface(this);//loadlistener
         listview.setAdapter(adapter);
@@ -62,22 +56,10 @@ public class FavorFragment extends Fragment implements RefreshListView.LoadListe
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                //加载数据
-                for (int i=1;i<5;i++){
-
-                    Map<String,String> map=new HashMap<>();
-                    map.put("title",theme[i]);
-                    map.put("source",author[i]);
-                    map.put("time",time[i]);
-                    list.add(map);
-                }
-                //更新 数据
-                adapter.notifyDataSetChanged();
-                //加载完毕
                 listview.loadComplete();
-
+                return;
             }
-        },2000);
+        },1500);
 
 
     }
@@ -87,21 +69,10 @@ public class FavorFragment extends Fragment implements RefreshListView.LoadListe
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                list.clear();
-                for(int i=0;i<5;i++)
-                {
-                    Map<String,String> map=new HashMap<>();
-                    map.put("title",theme[i]);
-                    map.put("source",author[i]);
-                    map.put("time",time[i]);
-                    list.add(map);
-                }
-
-                adapter.notifyDataSetChanged();
                 listview.loadComplete();
-
+                return;
             }
-        },1500);
+        },1000);
 
     }
 
@@ -110,14 +81,46 @@ public class FavorFragment extends Fragment implements RefreshListView.LoadListe
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position,
                                 long id) {
-            Map<String, String> mMap = (Map<String, String>) adapter.getItem(position);
-            String Text = mMap.get("title");
-            startActivityForResult(new Intent(getActivity(), forWeb.class),  1);
 
+            Map<String, String> mMap = (Map<String, String>) adapter.getItem(position-1);
+            String thisurl=mMap.get("url");
+            if(!forData.hashReads.contains(thisurl))
+            {
+                forData.hashReads.add(thisurl);
+                forData.newsReads.add(0,mMap);
+            }
+            mMap.put("read","1");
+            String Text = mMap.get("title");
+            Intent forurl = new Intent(getActivity(), forWeb.class);
+            forurl.putExtra("url", thisurl);
+            forurl.putExtra("position",position);
+            startActivityForResult(forurl, 3);
+            adapter.notifyDataSetChanged();
             Toast.makeText(getActivity(), Text, Toast.LENGTH_SHORT).show();
         }
 
 
     }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        int result = data.getExtras().getInt("favor");//得到新Activity 关闭后返回的数据
+        if(resultCode==4&&result==1)
+        {
+            int position=data.getExtras().getInt("position");
+            String url=data.getStringExtra("url");
+            if(!forData.hashFavor.contains(url))
+            {
+                Map<String, String> mMap = (Map<String, String>) adapter.getItem(position-1);
+                forData.hashFavor.add(url);
+                forData.newsFavors.add(0,mMap);
+            }
+        }
+
+
+    }
+
 
 }

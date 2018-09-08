@@ -17,6 +17,7 @@
             </intent-filter>
         </activity>
         <activity android:name="com.example.alice.myapplication.forWeb"></activity>
+        <activity android:name="com.example.alice.myapplication.forSetting"></activity>
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
 

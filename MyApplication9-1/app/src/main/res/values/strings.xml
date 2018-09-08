@@ -4,8 +4,8 @@
     <string name="title_activity_settings">Settings</string>
 
     <string name="keyword">Keyword</string>
-    <string name="block">Block</string>
-    <string name="unblock">Unblock</string>
+    <string name="block">👀</string>
+    <string name="unblock">已选中✔️</string>
     <string name="block_settings">Block Settings</string>
     <string name="title_block_settings">Block Settings</string>
 
@@ -50,4 +50,6 @@
     <string name="searched_images">(Images are from the internet.)</string>
     <string name="no_more">No more, click to refresh.</string>
     <string name="network_error">Network error</string>
+
+
 </resources>

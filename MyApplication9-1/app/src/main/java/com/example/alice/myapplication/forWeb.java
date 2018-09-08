@@ -22,6 +22,11 @@ import android.widget.ProgressBar;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 
 class MyWebView extends WebView {
@@ -40,7 +45,6 @@ class MyWebView extends WebView {
         super(context, attrs, defStyleAttr);
     }
 
-    @Override
     protected void onScrollChanged(int l, int t, int oldl, int oldt) {
         super.onScrollChanged(l, t, oldl, oldt);
         if (mOnScrollChangedCallback != null) {
@@ -70,8 +74,11 @@ public class forWeb extends Activity{
     private ProgressBar progressBar;
     private Button btnClose;
     private Button btnfavor;
-    private int id;
+    private Button btnshare;
     private String url;
+    private int position;
+    private int favFlag=0;
+    private static final String APP_CACAHE_DIRNAME = "/webcache";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,9 +89,10 @@ public class forWeb extends Activity{
         webView=(MyWebView)findViewById(R.id.webview);
         progressBar=(ProgressBar)findViewById(R.id.progressbar);
         btnfavor=(Button)findViewById(R.id.btn_favor);
+        btnshare=(Button)findViewById(R.id.btn_share);
 
         Intent data=getIntent();
-        id=data.getIntExtra("id",0);
+        position=data.getIntExtra("position",1);
         url=data.getStringExtra("url");
         webView.loadUrl(url);//加载url
 
@@ -105,24 +113,34 @@ public class forWeb extends Activity{
          * LOAD_NO_CACHE: 不使用缓存，只从网络获取数据.
                 * LOAD_CACHE_ELSE_NETWORK，只要本地有，无论是否过期，或者no-cache，都使用缓存中的数据。
 */
-        webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);//不使用缓存，只从网络获取数据.
+        //webSettings.setCacheMode(WebSettings.LOAD_NO_CACHE);//不使用缓存，只从网络获取数据.
+        webSettings.setRenderPriority(WebSettings.RenderPriority.HIGH);
+        webSettings.setCacheMode(WebSettings.LOAD_DEFAULT);  //设置 缓存模式
+        // 开启 DOM storage API 功能
+        webSettings.setDomStorageEnabled(true);
+        //开启 database storage API 功能
+        webSettings.setDatabaseEnabled(true);
+        String cacheDirPath = getFilesDir().getAbsolutePath()+APP_CACAHE_DIRNAME;
+        //      String cacheDirPath = getCacheDir().getAbsolutePath()+Constant.APP_DB_DIRNAME;
+        Log.i(TAG, "cacheDirPath="+cacheDirPath);
+        //设置数据库缓存路径
+        webSettings.setDatabasePath(cacheDirPath);
+        //设置  Application Caches 缓存目录
+        webSettings.setAppCachePath(cacheDirPath);
+        //开启 Application Caches 功能
+        webSettings.setAppCacheEnabled(true);
 
-        //支持屏幕缩放
-        webSettings.setSupportZoom(true);
-        webSettings.setBuiltInZoomControls(true);
 
         //不显示webview缩放按钮
         webSettings.setDisplayZoomControls(false);
         btnClose.setOnClickListener(new View.OnClickListener(){
-
             public void onClick(View v) {
-                //数据是使用Intent返回
-                Intent intent = new Intent();
-                //把返回数据存入Intent
-                intent.putExtra("result", url);
-                //设置返回数据
-                forWeb.this.setResult(1, intent);
-                //关闭Activity
+
+                Intent intent=new Intent();
+                intent.putExtra("favor",favFlag);
+                intent.putExtra("position",position);
+                intent.putExtra("url",url);
+                forWeb.this.setResult(2, intent);
                 forWeb.this.finish();
             }
         });
@@ -130,14 +148,14 @@ public class forWeb extends Activity{
         btnfavor.setOnClickListener(new View.OnClickListener(){
 
             public void onClick(View v) {
+               favFlag=1;
+            }
+        });
 
-                Intent intent = new Intent();
-                //把返回数据存入Intent
-                intent.putExtra("result", "My name is Alice");
-                //设置返回数据
-                forWeb.this.setResult(2, intent);
-                //关闭Activity
-                forWeb.this.finish();
+        btnshare.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+
+                //..******
             }
         });
 
@@ -157,6 +175,57 @@ public class forWeb extends Activity{
 
 
     }
+
+
+    public void clearWebViewCache(){
+
+        //清理Webview缓存数据库
+        try {
+            deleteDatabase("webview.db");
+            deleteDatabase("webviewCache.db");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //WebView 缓存文件
+        File appCacheDir = new File(getFilesDir().getAbsolutePath()+APP_CACAHE_DIRNAME);
+        Log.e(TAG, "appCacheDir path="+appCacheDir.getAbsolutePath());
+
+        File webviewCacheDir = new File(getCacheDir().getAbsolutePath()+"/webviewCache");
+        Log.e(TAG, "webviewCacheDir path="+webviewCacheDir.getAbsolutePath());
+
+        //删除webview 缓存目录
+        if(webviewCacheDir.exists()){
+            deleteFile(webviewCacheDir);
+        }
+        //删除webview 缓存 缓存目录
+        if(appCacheDir.exists()){
+            deleteFile(appCacheDir);
+        }
+    }
+
+    public void deleteFile(File file) {
+
+        Log.i(TAG, "delete file path=" + file.getAbsolutePath());
+
+        if (file.exists()) {
+            if (file.isFile()) {
+                file.delete();
+            } else if (file.isDirectory()) {
+                File files[] = file.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    deleteFile(files[i]);
+                }
+            }
+            file.delete();
+        } else {
+            Log.e(TAG, "delete file no exists " + file.getAbsolutePath());
+        }
+    }
+
+
+
+
 
     //WebViewClient主要帮助WebView处理各种通知、请求事件
     private WebViewClient webViewClient=new WebViewClient(){

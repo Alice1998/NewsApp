@@ -4,47 +4,113 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RadioGroup
-        android:id="@+id/home_rg"
+    <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content" >
 
-        <RadioButton
-            android:id="@+id/News_China"
-            android:layout_width="0dp"
+        <RadioGroup
+            android:id="@+id/home_rg"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/Alice_pink3"
-            android:button="@null"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="今日新闻"/>
+            android:orientation="horizontal">
+            <RadioButton
+                android:id="@+id/News_0"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="今日推荐"
+                android:background="@color/Alice_pink3"
+                android:button="@null"
+                android:gravity="center"
+                android:visibility="visible"
+                android:padding="20dp"/>
+            <RadioButton
+                android:id="@+id/News_1"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="国际新闻"
+                android:background="@drawable/select"
+                android:button="@null"
+                android:gravity="center"
+                android:visibility="gone"
+                android:padding="20dp"/>
 
-        <RadioButton
-            android:id="@+id/News_Abroad"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/Alice_pink1"
-            android:button="@null"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="国内新闻" />
+            <RadioButton
+                android:id="@+id/News_2"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="经济新闻"
+                android:background="@drawable/select"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="20dp"
+                android:visibility="gone"/>
+            <RadioButton
+                android:id="@+id/News_3"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:text="文化新闻"
+                android:background="@drawable/select"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="20dp"
+                android:visibility="gone"/>
 
-        <RadioButton
-            android:id="@+id/News_Finance"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/Alice_pink2"
-            android:button="@null"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="国际新闻" />
+            <RadioButton
+                android:id="@+id/News_4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="体育新闻"
+                android:background="@drawable/select"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="20dp"
+                android:visibility="gone"/>
 
-    </RadioGroup>
-    <!--自定义指示器-->
+            <RadioButton
+                android:id="@+id/News_5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="法制新闻"
+                android:background="@drawable/select"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="20dp"
+                android:visibility="gone"/>
+            <RadioButton
+                android:id="@+id/News_6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="传媒新闻"
+                android:background="@drawable/select"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="20dp"
+                android:visibility="gone"/>
+            <RadioButton
+                android:id="@+id/News_7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="娱乐新闻"
+                android:background="@drawable/select"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="20dp"
+                android:visibility="gone"/>
+            <RadioButton
+                android:id="@+id/News_8"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="观点新闻"
+                android:background="@drawable/select"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="20dp"
+                android:visibility="gone"/>
+
+
+        </RadioGroup>
+
+    </HorizontalScrollView>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="5dp">
@@ -60,7 +126,6 @@
             android:layout_height="match_parent"
             android:background="#16308c" />
     </FrameLayout>
-
     <android.support.v4.view.ViewPager
         android:id="@+id/home_vp"
         android:layout_width="match_parent"

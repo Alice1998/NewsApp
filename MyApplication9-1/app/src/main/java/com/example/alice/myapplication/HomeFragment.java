@@ -9,7 +9,9 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 
 import java.util.ArrayList;
@@ -23,43 +25,62 @@ public class HomeFragment extends Fragment implements RadioGroup.OnCheckedChange
     RadioGroup rg;
     View vi;
     ViewPager vp;
+    RadioButton[] types=new RadioButton[10];
+    Fragment1 fav=new Fragment1();
+    Fragment2 mineNews[]=new Fragment2[9];
+    Bundle bundle[]=new Bundle[9];
+    int createflag=0;
+    int toPosition[]=new int[10];
+    int toButton[]=new int[10];
 
     //数据源的集合
     List<Fragment> list = new ArrayList<>();
+    FragmentStatePagerAdapter adapter;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //加载数据
-        Fragment1 fav=new Fragment1();
-        Bundle bundle=new Bundle();
-        Fragment2 china=new Fragment2();
-        bundle.putString("cat","国内");
-        china.setArguments(bundle);
-        Fragment2 abroad=new Fragment2();
-        Bundle bundle2=new Bundle();
-        bundle2.putString("cat","国际");
-        abroad.setArguments(bundle2);
-        list.add(fav);
-        list.add(china);
-        list.add(abroad);
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        //加载自己编写的布局文件
-        return View.inflate(getActivity(), R.layout.activity_frag_home, null);
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        //实例化控件
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view=View.inflate(getActivity(), R.layout.activity_frag_home, null);
         rg = (RadioGroup) view.findViewById(R.id.home_rg);
         vp = (ViewPager) view.findViewById(R.id.home_vp);
         vi = view.findViewById(R.id.home_fl_view);
+
+        types[0]=(RadioButton)view.findViewById(R.id.News_1);
+        types[1]=(RadioButton)view.findViewById(R.id.News_2);
+        types[2]=(RadioButton)view.findViewById(R.id.News_3);
+        types[3]=(RadioButton)view.findViewById(R.id.News_4);
+        types[4]=(RadioButton)view.findViewById(R.id.News_5);
+        types[5]=(RadioButton)view.findViewById(R.id.News_6);
+        types[6]=(RadioButton)view.findViewById(R.id.News_7);
+        types[7]=(RadioButton)view.findViewById(R.id.News_8);
+
+        mineNews[0]=new Fragment2();
+        bundle[0]=new Bundle();
+        bundle[0].putString("cat","国际新闻");
+        mineNews[0].setArguments(bundle[0]);
+
+        mineNews[1]=new Fragment2();
+        bundle[1]=new Bundle();
+        bundle[1].putString("cat","经济新闻");
+        mineNews[1].setArguments(bundle[1]);
+
+        mineNews[2]=new Fragment2();
+        bundle[2]=new Bundle();
+        bundle[2].putString("cat","文化新闻");
+        mineNews[2].setArguments(bundle[2]);
+        list.add(fav);
+
+
+        for(int i=0;i<3;i++)
+        {
+            list.add(mineNews[i]);
+            toPosition[i]=i+1;
+            toButton[i+1]=i;
+            types[i].setVisibility(View.VISIBLE);
+        }
+        createflag=1;
+
         //创建适配器,设置的碎片管理器使用的是getChildFragmentManager()
-        FragmentStatePagerAdapter adapter = new Myadapter(getChildFragmentManager());
+        adapter = new Myadapter(getChildFragmentManager());
         //给ViewPager设置适配器
         vp.setAdapter(adapter);
         //给控件设置监听事件
@@ -67,6 +88,49 @@ public class HomeFragment extends Fragment implements RadioGroup.OnCheckedChange
         //给ViewPager设置监听器使用的是add而不是set了
         vp.addOnPageChangeListener(this);
         initVi();
+        return view;
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        if(createflag==1)
+        {
+            createflag=2;
+            return;
+        }
+        list.clear();
+        list.add(fav);
+        int pointer=1;
+        String haveit;
+        for(int i=0;i<8;i++)
+        {
+            haveit=forData.urlMap.input.get(i);
+            if(forSetting.mineMap.get(haveit))
+            {
+                types[i].setVisibility(View.VISIBLE);
+                if(mineNews[i]!=null)
+                    list.add(mineNews[i]);
+                else
+                {
+                    mineNews[i]=new Fragment2();
+                    bundle[i]=new Bundle();
+                    bundle[i].putString("cat",haveit);
+                    mineNews[i].setArguments(bundle[i]);
+                    list.add(mineNews[i]);
+                }
+                toPosition[i]=pointer;
+                toButton[pointer]=i;
+                pointer++;
+            }
+            else
+            {
+                types[i].setVisibility(View.GONE);
+            }
+        }
+        createflag=2;
+        adapter.notifyDataSetChanged();
     }
 
     //屏幕一般的宽度
@@ -74,7 +138,7 @@ public class HomeFragment extends Fragment implements RadioGroup.OnCheckedChange
 
     //把下划线View设置初始值
     private void initVi() {
-        width = getResources().getDisplayMetrics().widthPixels / 3;
+        width = getResources().getDisplayMetrics().widthPixels / list.size();
         //设置下划线View的长度
         FrameLayout.LayoutParams par = new FrameLayout.LayoutParams(width, ViewGroup.LayoutParams.MATCH_PARENT);
         vi.setLayoutParams(par);
@@ -87,17 +151,22 @@ public class HomeFragment extends Fragment implements RadioGroup.OnCheckedChange
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         //点击后选择对应的ViewPager页面
         //vp.setCurrentItem(checkedId == R.id.News_China ? 0 : 1);
-        if(checkedId==R.id.News_China)
+        if(checkedId==R.id.News_0)
         {
             vp.setCurrentItem(0);
             return;
         }
-        else if(checkedId==R.id.News_Abroad)
-        {
-            vp.setCurrentItem(1);
-        }
         else
-            vp.setCurrentItem(2);
+        {
+            for(int i=0;i<8;i++)
+            {
+                if(checkedId==types[i].getId())
+                {
+                    vp.setCurrentItem(toPosition[i]);
+                    return;
+                }
+            }
+        }
 
     }
 
@@ -120,23 +189,13 @@ public class HomeFragment extends Fragment implements RadioGroup.OnCheckedChange
     @Override
     public void onPageSelected(int position) {
         //选择页面后设置单选按钮的选择
-        switch (position)
+        // todo
+        if(position==0)
         {
-            case 0:
-                rg.check(R.id.News_China);
-                return;
-            case 1:
-                rg.check(R.id.News_Abroad);
-                return;
-
-            case 2:
-                rg.check(R.id.News_Finance);
-                return;
-
-             default:
-                 rg.check(R.id.News_China);
-
+            rg.check(R.id.News_0);
+            return;
         }
+        rg.check(types[toButton[position]].getId());
     }
 
     //这个方法不用理会

@@ -3,26 +3,27 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <Switch
-        android:id="@+id/show_pictures_switch"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="16dp"
-        android:text="@string/show_pictures"
-        android:textSize="18sp" />
+
 
     <Switch
         android:id="@+id/night_mode_switch"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="@string/night_mode"
+        android:text="夜间模式"
         android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/download"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="清除缓存" />
+
 
     <Button
         android:id="@+id/blocking_settings_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/block_settings" />
+        android:text="设置标签" />
 
 </LinearLayout>

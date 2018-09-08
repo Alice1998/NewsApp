@@ -16,18 +16,20 @@ import java.text.SimpleDateFormat;
 
 
 public class RefreshListView extends ListView implements AbsListView.OnScrollListener{
-    private View footview;
+    private View bottomview;
     private View headview;
+
+    private int bottomViewHeight;
+    private int headViewHeight;
     private int totaItemCounts;
     private int lasstVisible;
     private int fistVisiable;
-    private LoadListener loadListener;
-    private int footViewHeight;
-    private int headViewHeight;
+
     private int yload;
     boolean isLoading;
     private TextView updateInfo;
     private TextView updateTime;
+    private LoadListener loadListener;
     private ProgressBar progressBar;
     public RefreshListView(Context context) {
         super(context);
@@ -49,24 +51,21 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
         updateInfo=(TextView)headview.findViewById(R.id.update_info);
         updateTime=(TextView)headview.findViewById(R.id.update_time);
         progressBar=(ProgressBar)headview.findViewById(R.id.progressbar);
-        updateTime.setText("更新于："+new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss").format(System.currentTimeMillis()));
+        updateTime.setText(new SimpleDateFormat("yyyy-MM-dd  HH:mm:ss").format(System.currentTimeMillis())+" update");
+
         //拿到尾布局xml
-        footview=LayoutInflater.from(context).inflate(R.layout.bottom_layout,null);
-        //测量footview的高度
-        footview.measure(0,0);
+        bottomview=LayoutInflater.from(context).inflate(R.layout.bottom_layout,null);
+        //测量bottomview的高度
+        bottomview.measure(0,0);
         //拿到高度
-        footViewHeight=footview.getMeasuredHeight();
+        bottomViewHeight=bottomview.getMeasuredHeight();
         //隐藏view
-        footview.setPadding(0,-footViewHeight,0,0);
+        bottomview.setPadding(0,-bottomViewHeight,0,0);
         headview.measure(0,0);
         headViewHeight=headview.getMeasuredHeight();
         headview.setPadding(0,-headViewHeight,0,0);
-        //设置不可见
-        // footview.findViewById(R.id.foot_load).setVisibility(View.GONE);
-        // headview.findViewById(R.id.head).setVisibility(View.GONE);
-        //添加到listview底部
-        this.addFooterView(footview);
-        //添加到listview头部
+
+        this.addFooterView(bottomview);
         this.addHeaderView(headview);
         //设置拉动监听
         this.setOnScrollListener(this);
@@ -85,24 +84,17 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
                 int paddingY=-headViewHeight+(moveY-yload)/2;
 
                 if (paddingY<0){
-                    updateInfo.setText("下拉刷新。。。");
+                    updateInfo.setText("下拉刷新...");
                     progressBar.setVisibility(View.GONE);
                 }
                 if (paddingY>0){
-                    updateInfo.setText("松开刷新。。。");
+                    updateInfo.setText("松开刷新...");
                     progressBar.setVisibility(View.GONE);
                 }
 
                 headview.setPadding(0,paddingY,0,0);
-
                 break;
-//            case MotionEvent.ACTION_UP:
-//                headview.setPadding(0,0,0,0);
-//                updateInfo.setText("正在刷新。。。");
-//                progressBar.setVisibility(View.VISIBLE);
-//                loadListener.pullLoad();
 //
-//                break;
         }
         return super.onTouchEvent(ev);
     }
@@ -112,8 +104,8 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
         if (totaItemCounts==lasstVisible&&scrollState==SCROLL_STATE_IDLE) {
             if (!isLoading) {
                 isLoading=true;
-                // footview.findViewById(R.id.foot_load).setVisibility(View.VISIBLE);
-                footview.setPadding(0,0,0,0);
+                // bottomview.findViewById(R.id.foot_load).setVisibility(View.VISIBLE);
+                bottomview.setPadding(0,0,0,0);
                 //加载数据
                 loadListener.onLoad();
 
@@ -139,8 +131,8 @@ public class RefreshListView extends ListView implements AbsListView.OnScrollLis
     //加载完成
     public void loadComplete(){
         isLoading=false;
-        //footview.findViewById(R.id.foot_load).setVisibility(View.GONE);
-        footview.setPadding(0,-footViewHeight,0,0);
+
+        bottomview.setPadding(0,-bottomViewHeight,0,0);
         headview.setPadding(0,-headViewHeight,0,0);
 
 

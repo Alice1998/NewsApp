@@ -25,9 +25,8 @@ public class Fragment2 extends Fragment implements RefreshListView.LoadListener 
     private RefreshListView listview;
     private List<Map<String, String>> list;
     private mySimpleAdapter adapter;
-
-    forData allData;
-    int shownNum;
+    private forData allData;
+    private int shownNum;
 
 
 
@@ -35,7 +34,6 @@ public class Fragment2 extends Fragment implements RefreshListView.LoadListener 
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment2, container, false);
-        //setContentView(R.layout.activity_main);
         list = new ArrayList<>();
         Bundle bundle = getArguments();
         titleType=(String)bundle.get("cat");
@@ -101,11 +99,17 @@ public class Fragment2 extends Fragment implements RefreshListView.LoadListener 
                                 long id) {
 
             Map<String, String> mMap = (Map<String, String>) adapter.getItem(position-1);
+            String thisurl=mMap.get("url");
+            if(!allData.hashReads.contains(thisurl))
+            {
+                allData.hashReads.add(thisurl);
+                allData.newsReads.add(0,mMap);
+            }
             mMap.put("read","1");
             String Text = mMap.get("title");
             Intent forurl = new Intent(getActivity(), forWeb.class);
-            forurl.putExtra("url", mMap.get("url"));
-            forurl.putExtra("id",position-1);
+            forurl.putExtra("url", thisurl);
+            forurl.putExtra("position",position);
             startActivityForResult(forurl, 1);
             adapter.notifyDataSetChanged();
             Toast.makeText(getActivity(), Text, Toast.LENGTH_SHORT).show();
@@ -117,14 +121,22 @@ public class Fragment2 extends Fragment implements RefreshListView.LoadListener 
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        String result = data.getExtras().getString("favor");//得到新Activity 关闭后返回的数据
-        switch (requestCode) {
-            case 1:
-                //来自按钮1的请求，作相应业务处理
-            case 2:
-                //来自按钮2的请求，作相应业务处理
+        super.onActivityResult(requestCode, resultCode, data);
+        int result = data.getExtras().getInt("favor");//得到新Activity 关闭后返回的数据
+        if(resultCode==2&&result==1)
+        {
+            int position=data.getExtras().getInt("position");
+            String url=data.getStringExtra("url");
+            if(!allData.hashFavor.contains(url))
+            {
+                Map<String, String> mMap = (Map<String, String>) adapter.getItem(position-1);
+                allData.hashFavor.add(url);
+                allData.newsFavors.add(0,mMap);
+            }
         }
 
 
     }
+
+
 }

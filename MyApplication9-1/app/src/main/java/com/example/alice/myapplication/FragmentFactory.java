@@ -20,7 +20,6 @@ public class FragmentFactory {
         Fragment fragment = null;
         switch (type) {
             case 0:
-                Log.e("TAG", "type:" + type);
                 fragment = new HomeFragment();
                 break;
             case 1:

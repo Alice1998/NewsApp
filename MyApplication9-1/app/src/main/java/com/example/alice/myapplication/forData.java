@@ -9,6 +9,8 @@ import java.net.URL;
 import java.nio.Buffer;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -17,16 +19,29 @@ import java.util.regex.Pattern;
 
 class myStatic{
 
-    public Map<String,String> map;
+    static public Map<String,String> map;
+    static public ArrayList<String> input=new ArrayList<>();
     public myStatic()
     {
         map=new HashMap<>();
-        map.put("推荐","");
-        map.put("国内","http://www.people.com.cn/rss/politics.xml");
-        map.put("国际","http://www.people.com.cn/rss/world.xml");
-        map.put("经济", "http://www.people.com.cn/rss/finance.xml");
-        map.put("文化", "http://www.people.com.cn/rss/culture.xml");
-        map.put("体育", "http://www.people.com.cn/rss/sports.xml");
+        map.put("国内新闻", "http://www.people.com.cn/rss/politics.xml");
+        map.put("国际新闻", "http://www.people.com.cn/rss/world.xml");
+        map.put("经济新闻", "http://www.people.com.cn/rss/finance.xml");
+        map.put("文化新闻", "http://www.people.com.cn/rss/culture.xml");
+        map.put("体育新闻", "http://www.people.com.cn/rss/sports.xml");
+        map.put("法制新闻",  "http://www.people.com.cn/rss/legal.xml");
+        map.put("传媒新闻", "http://www.people.com.cn/rss/media.xml");
+        map.put("娱乐新闻", "http://www.people.com.cn/rss/ent.xml");
+        map.put("观点新闻", "http://www.people.com.cn/rss/opinion.xml");
+        //input.add("国内新闻");
+        input.add("国际新闻");
+        input.add("经济新闻");
+        input.add("文化新闻");
+        input.add("体育新闻");
+        input.add("法制新闻");
+        input.add("传媒新闻");
+        input.add("娱乐新闻");
+        input.add("观点新闻");
     }
 }
 
@@ -44,13 +59,19 @@ public class forData {
     String patternSource;
     Pattern pSource;
     static myStatic urlMap;
-    static List<Map<String,String>> newsFavors;
-    static List<Map<String,String>> newsReads;
+    static List<Map<String,String>> newsFavors=new LinkedList<>();
+    static List<Map<String,String>> newsReads=new LinkedList<>();
+    static HashSet<String> hashFavor=new HashSet<>();
+    static HashSet<String> hashReads=new HashSet<>();
     int haveshown;
 
-    forData(String input)
+    forData()
     {
-        type=input;
+        urlMap=new myStatic();
+    }
+    forData(String i)
+    {
+        type=i;
         newsData=new ArrayList<>();
         patternTitle="<title><!\\[CDATA\\[(.+)\\]\\]><\\/title>";
         pTitle=Pattern.compile(patternTitle);
@@ -71,13 +92,6 @@ public class forData {
 
     }
 
-    public void getMore()
-    {
-        if(haveshown>=newsData.size())
-        {
-            //...
-        }
-    }
 
     private void dealUrl(String u)
     {
