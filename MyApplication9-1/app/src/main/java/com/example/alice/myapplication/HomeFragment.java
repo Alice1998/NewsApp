@@ -31,9 +31,18 @@ public class HomeFragment extends Fragment implements RadioGroup.OnCheckedChange
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         //加载数据
-        list.add(new Fragment1());
-        list.add(new Fragment2());
-        list.add(new Fragment2());
+        Fragment1 fav=new Fragment1();
+        Bundle bundle=new Bundle();
+        Fragment2 china=new Fragment2();
+        bundle.putString("cat","国内");
+        china.setArguments(bundle);
+        Fragment2 abroad=new Fragment2();
+        Bundle bundle2=new Bundle();
+        bundle2.putString("cat","国际");
+        abroad.setArguments(bundle2);
+        list.add(fav);
+        list.add(china);
+        list.add(abroad);
     }
 
     @Override

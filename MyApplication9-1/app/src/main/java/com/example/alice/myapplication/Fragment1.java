@@ -35,11 +35,11 @@ public class Fragment1 extends Fragment implements AdapterView.OnItemClickListen
 
 
         //数据部分
+
         List<String> array=new ArrayList<>();
         for(int i=0;i<20;i++)
             array.add("This is No. "+i);
-        mAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, array);
+        mAdapter = new ArrayAdapter<>(getActivity(),android.R.layout.simple_list_item_1, array);
 
         mListView.setAdapter(mAdapter);
 

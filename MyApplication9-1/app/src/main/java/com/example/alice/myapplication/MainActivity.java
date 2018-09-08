@@ -2,12 +2,17 @@ package com.example.alice.myapplication;
 
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
@@ -17,12 +22,21 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     Fragment[] fragments = new Fragment[3];
     //之前选中的页面游标值
     int beforeIndex = -1;
+    public static List<Map<String, String>> haveRead;
+    public static List<Map<String, String>> addFavor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
+
+        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+                .detectDiskReads().detectDiskWrites().detectNetwork()
+                .penaltyLog().build());
+        StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
+                .detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
+                .penaltyLog().penaltyDeath().build());
 
 
     }
@@ -36,6 +50,8 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         //默认显示主页面的碎片
         rg.check(R.id.main_rb2);
         // showFragment(2);
+        haveRead=new ArrayList<>();
+        addFavor=new ArrayList<>();
     }
 
     //点击对应的按钮后触发的事件

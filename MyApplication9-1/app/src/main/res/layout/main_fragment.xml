@@ -27,21 +27,21 @@
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/back" />
+                    android:src="@mipmap/ic_launcher" />
 
                 <ImageView
                     android:id="@+id/img2"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/home" />
+                    android:src="@mipmap/ic_launcher" />
 
                 <ImageView
                     android:id="@+id/img3"
                     android:layout_width="match_parent"
                     android:layout_height="150dp"
                     android:scaleType="fitXY"
-                    android:src="@drawable/favor" />
+                    android:src="@mipmap/ic_launcher" />
             </ViewFlipper>
 
             <!--my为App的名字-->

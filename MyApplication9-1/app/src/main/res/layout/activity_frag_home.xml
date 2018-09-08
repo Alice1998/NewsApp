@@ -15,14 +15,25 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:background="@color/Alice_pink3"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="今日新闻"/>
+
+        <RadioButton
+            android:id="@+id/News_Abroad"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:background="@color/Alice_pink1"
             android:button="@null"
             android:gravity="center"
             android:padding="10dp"
-            android:text="国内新闻"/>
+            android:text="国内新闻" />
 
         <RadioButton
-            android:id="@+id/News_Abroad"
+            android:id="@+id/News_Finance"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -31,17 +42,6 @@
             android:gravity="center"
             android:padding="10dp"
             android:text="国际新闻" />
-
-        <RadioButton
-            android:id="@+id/News_Finance"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:background="@color/Alice_pink3"
-            android:button="@null"
-            android:gravity="center"
-            android:padding="10dp"
-            android:text="财经新闻" />
 
     </RadioGroup>
     <!--自定义指示器-->

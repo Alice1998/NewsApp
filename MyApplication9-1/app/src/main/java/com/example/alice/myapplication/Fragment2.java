@@ -1,6 +1,7 @@
 package com.example.alice.myapplication;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -10,56 +11,44 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-/**
- * Created by liang on 2016/8/18.
- */
+
 public class Fragment2 extends Fragment implements RefreshListView.LoadListener {
+    String titleType;
     private RefreshListView listview;
-    private List<Integer> list=new ArrayList<>();
-    private ArrayAdapter adapter;
+    private List<Map<String, String>> list;
+    private mySimpleAdapter adapter;
+
+    forData allData;
+    int shownNum;
+
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        /*
-          View view=inflater.inflate(R.layout.fragment1,container,false);
-        mScrollView = (ScrollView) view.findViewById(R.id.scrollview);
-        mListView = (NestedListView) view.findViewById(R.id.listview_1);
-        flipper=(ViewFlipper)view.findViewById(R.id.viewflipper);
-        //启动图片切换
-        flipper.startFlipping();
-
-
-        //数据部分
-        List<String> array=new ArrayList<>();
-        for(int i=0;i<20;i++)
-            array.add("This is No. "+i);
-
-        mAdapter = new ArrayAdapter<>(getActivity(),
-                android.R.layout.simple_list_item_1, array);
-
-        mListView.setAdapter(mAdapter);
-
-        //解决未滑动时聚焦listview的问题
-        mListView.setFocusable(false);
-
-        return view;
-         */
-
-        View view=inflater.inflate(R.layout.fragment2,container,false);
+        View view = inflater.inflate(R.layout.fragment2, container, false);
         //setContentView(R.layout.activity_main);
-        for (int i=1;i<20;i++){
-            list.add(i);
+        list = new ArrayList<>();
+        Bundle bundle = getArguments();
+        titleType=(String)bundle.get("cat");
+        allData = new forData(titleType);
+        for (int i = 1; i < 16; i++) {
+            list.add(allData.newsData.get(i));
         }
-        adapter=new ArrayAdapter<>(getActivity(),android.R.layout.simple_expandable_list_item_1,list);
-        listview=(RefreshListView)view.findViewById(R.id.list_view);
+        shownNum = 15;
+        adapter = new mySimpleAdapter(getActivity(), list, R.layout.news_item, new String[]{"title", "source", "time"}, new int[]{R.id.title, R.id.source, R.id.datetime});
+        listview = (RefreshListView) view.findViewById(R.id.list_view);
         listview.setInterface(this);//loadlistener
         listview.setAdapter(adapter);
+        listview.setOnItemClickListener(new MyListener());
         return view;
     }
 
@@ -71,17 +60,17 @@ public class Fragment2 extends Fragment implements RefreshListView.LoadListener 
             @Override
             public void run() {
                 //加载数据
-                for (int j=1;j<11;j++){
-
-                    list.add(j);
+                int add = 1;
+                while (shownNum < allData.newsData.size() && add < 6) {
+                    list.add(allData.newsData.get(shownNum + add));
+                    add++;
                 }
-                //更新 数据
+                shownNum += add-1;
                 adapter.notifyDataSetChanged();
-                //加载完毕
                 listview.loadComplete();
 
             }
-        },3000);
+        }, 2000);
 
 
     }
@@ -92,15 +81,50 @@ public class Fragment2 extends Fragment implements RefreshListView.LoadListener 
             @Override
             public void run() {
                 list.clear();
-                for (int i=1;i<20;i++){
-                    list.add(i+1);
+                allData.Refresh();
+                for (int i = 1; i < 16; i++) {
+                    list.add(allData.newsData.get(i));
                 }
+                shownNum = 15;
                 adapter.notifyDataSetChanged();
                 listview.loadComplete();
 
             }
-        },2000);
+        }, 1500);
 
     }
 
+    class MyListener implements AdapterView.OnItemClickListener {
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position,
+                                long id) {
+
+            Map<String, String> mMap = (Map<String, String>) adapter.getItem(position-1);
+            mMap.put("read","1");
+            String Text = mMap.get("title");
+            Intent forurl = new Intent(getActivity(), forWeb.class);
+            forurl.putExtra("url", mMap.get("url"));
+            forurl.putExtra("id",position-1);
+            startActivityForResult(forurl, 1);
+            adapter.notifyDataSetChanged();
+            Toast.makeText(getActivity(), Text, Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        String result = data.getExtras().getString("favor");//得到新Activity 关闭后返回的数据
+        switch (requestCode) {
+            case 1:
+                //来自按钮1的请求，作相应业务处理
+            case 2:
+                //来自按钮2的请求，作相应业务处理
+        }
+
+
+    }
 }
