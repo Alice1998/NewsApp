@@ -36,7 +36,11 @@ public class forSearch extends AppCompatActivity {
         lListView = (ListView) findViewById(R.id.listView);
         backbtn=(Button) findViewById(R.id.for_back);
         Intent intent=getIntent();
-        data=HomeFragment.mineNews[intent.getIntExtra("type",0)].allData.newsData;
+        int inputtype=intent.getIntExtra("type",-1);
+        if(inputtype==-1||inputtype==0)
+            data=HomeFragment.fav.allData.newsData;
+        else
+            data=HomeFragment.mineNews[inputtype].allData.newsData;
         list=new LinkedList<>(data);
         list.remove(0);
         adapter=new mySimpleAdapter(this,list, R.layout.news_item, new String[]{"title", "source", "time"}, new int[]{R.id.title, R.id.source, R.id.datetime});

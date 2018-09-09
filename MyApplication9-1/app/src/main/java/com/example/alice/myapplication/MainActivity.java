@@ -31,13 +31,13 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         setContentView(R.layout.activity_main);
         initView();
 
-      /*  StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+      StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads().detectDiskWrites().detectNetwork()
                 .penaltyLog().build());
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
                 .detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
                 .penaltyLog().penaltyDeath().build());
-*/
+
     }
 
     //初始化数据
@@ -51,31 +51,6 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         // showFragment(0);
     }
 
-    Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            super.handleMessage(msg);
-            Bundle data = msg.getData();
-            String val = data.getString("value");
-            Log.i("mylog", "请求结果为-->" + val);
-            // TODO
-            // UI界面的更新等相关操作
-        }
-    };
-
-    Runnable networkTask = new Runnable() {
-
-        @Override
-        public void run() {
-            // TODO
-            // 在这里进行 http request.网络请求相关操作
-            Message msg = new Message();
-            Bundle data = new Bundle();
-            data.putString("value", "请求结果");
-            msg.setData(data);
-            handler.sendMessage(msg);
-        }
-    };
 
 
     //点击对应的按钮后触发的事件

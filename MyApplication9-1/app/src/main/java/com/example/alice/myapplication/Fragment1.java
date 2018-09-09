@@ -23,6 +23,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -38,13 +39,18 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
     private RefreshListView listview;
     private List<Map<String, String>> list;
     private mySimpleAdapter adapter;
-    private forData allData;
+    forData allData;
     private int shownNum;
-    ImageView []pics=new ImageView[3];
+    ImageView pics1;
+    ImageView pics2;
+    ImageView pics3;
+    ImageView pics4;
+    ImageView pics5;
 
     public static final int GET_DATA_SUCCESS = 1;
     public static final int NETWORK_ERROR = 2;
     public static final int SERVER_ERROR = 3;
+    int k=0;
 
 
     @Override
@@ -54,14 +60,23 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
         //启动图片切换
         list = new ArrayList<>();
 
-       // allData = new forData("国内新闻");
-
-        forweb("国内新闻");
-        //forData.forTitle();
-        pics[0]=(ImageView)view.findViewById(R.id.img1);
-        pics[1]=(ImageView)view.findViewById(R.id.img2);
-        pics[2]=(ImageView)view.findViewById(R.id.img3);
-
+        allData = new forData("国内新闻");
+        forData.forTitle();
+        pics1=(ImageView)view.findViewById(R.id.img1);
+        pics2=(ImageView)view.findViewById(R.id.img2);
+        pics3=(ImageView)view.findViewById(R.id.img3);
+        pics4=(ImageView)view.findViewById(R.id.img4);
+        pics5=(ImageView)view.findViewById(R.id.img5);
+        for (int i = 1; i < 16; i++) {
+            list.add(allData.newsData.get(i));
+        }
+        shownNum = 15;
+        for(int i=0;i<5;i++)
+        {
+            String url = forData.newsTitles.get(i).get("pic");
+            String name=forData.newsTitles.get(i).get("title");
+            setImageURL(url,i);
+        }
 
         adapter = new mySimpleAdapter(getActivity(), list, R.layout.news_item, new String[]{"title", "source", "time"}, new int[]{R.id.title, R.id.source, R.id.datetime});
         listview = (RefreshListView) view.findViewById(R.id.list_view);
@@ -72,7 +87,48 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
         flipper=(ViewFlipper)view.findViewById(R.id.viewflipper);
         flipper.startFlipping();
 
+        pics1.setOnClickListener(new View.OnClickListener(){
+                public void onClick(View v) {
+                   setViewbtn(0);
+                }
+            });
+        pics2.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                setViewbtn(1);
+            }
+        });
+        pics3.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                setViewbtn(2);
+            }
+        });
+
         return view;
+    }
+
+    private void setViewbtn(int k)
+    {
+        String thisurl=forData.newsTitles.get(k).get("url");
+        String Text = forData.newsTitles.get(k).get("title");
+        Map<String,String> mMap=new HashMap<>();
+        mMap.put("title",Text);
+        mMap.put("url",thisurl);
+        mMap.put("source","");
+        mMap.put("time","");
+        if(!allData.hashReads.contains(thisurl))
+        {
+            allData.hashReads.add(thisurl);
+            allData.newsReads.add(0,mMap);
+        }
+        mMap.put("read","1");
+        adapter.notifyDataSetChanged();
+        Intent forurl = new Intent(getActivity(), forWeb.class);
+        forurl.putExtra("url", thisurl);
+        list.add(mMap);
+        forurl.putExtra("position",list.size());
+        forurl.putExtra("title",Text);
+        forurl.putExtra("love",0);
+        startActivityForResult(forurl, 1);
     }
 
     private Handler handler = new Handler() {
@@ -81,7 +137,16 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
             switch (msg.what){
                 case GET_DATA_SUCCESS:
                     Bitmap bitmap = (Bitmap) msg.obj;
-                    pics[(int)msg.arg1].setImageBitmap(bitmap);
+                    if((int)msg.arg1==0)
+                        pics1.setImageBitmap(bitmap);
+                    else if((int) msg.arg1==1)
+                        pics2.setImageBitmap(bitmap);
+                    else if((int)msg.arg1==2)
+                        pics3.setImageBitmap(bitmap);
+                    else if((int)msg.arg1==3)
+                        pics4.setImageBitmap(bitmap);
+                    else
+                        pics5.setImageBitmap(bitmap);
                     break;
                 case NETWORK_ERROR:
                     Toast.makeText(getContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
@@ -124,54 +189,6 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
         }.start();
     }
 
-
-    private Handler handler2 = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            switch (msg.what){
-                case GET_DATA_SUCCESS:
-                    for (int i = 1; i < 16; i++) {
-                        list.add(allData.newsData.get(i));
-                    }
-                    shownNum = 15;
-                    adapter.notifyDataSetChanged();
-                    for(int i=0;i<3;i++)
-                    {
-                        String url = forData.newsTitles.get(i).get("pic");
-                        setImageURL(url,i);
-                    }
-                    break;
-                case NETWORK_ERROR:
-                    Toast.makeText(getContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
-                    break;
-                case SERVER_ERROR:
-                    Toast.makeText(getContext(),"服务器发生错误",Toast.LENGTH_SHORT).show();
-                    break;
-            }
-        }
-    };
-
-    private void forweb(final String input)
-    {
-        new Thread()
-        {
-            @Override
-            public void run()
-            {
-                try {
-                    allData = new forData("国内新闻");
-                    forData.forTitle();
-                    Message msg = Message.obtain();
-                    msg.what = 1;
-                    handler2.sendMessage(msg);
-                }
-                catch (Exception e)
-                {
-                    handler2.sendEmptyMessage(2);
-                }
-            }
-        }.start();
-    }
 
     @Override
     public void onLoad() {

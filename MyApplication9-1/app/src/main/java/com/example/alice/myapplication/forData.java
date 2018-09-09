@@ -121,10 +121,10 @@ public class forData {
             }
             int index=input.indexOf(start);
             input=input.substring(index);
-            Matcher m;
-            Map<String,String> one=new HashMap<>();
             for(int i=0;i<5;i++)
             {
+                Matcher m;
+                Map<String,String> one=new HashMap<>();
                 m=geturl.matcher(input);
                 if(m.find())
                 one.put("url",m.group(1));
@@ -151,6 +151,8 @@ public class forData {
 
     private void dealUrl(String u)
     {
+        String pattern="<title><!\\[CDATA\\[(.+)\\]\\]><\\/title>\n[ ]*<link>(.+)<\\/link>\n[ ]*<pubDate>(.+)<\\/pubDate>\n[ ]*<author>(.+)<\\/author>";
+        Pattern all=Pattern.compile(pattern);
                 try{
                     String input="";
                     URL mine=new URL(u);
@@ -161,6 +163,19 @@ public class forData {
                         input+=inputline+"\n";
                     }
                     Matcher m;
+                    m=all.matcher(input);
+                    while(m.find())
+                    {
+                        Map<String,String> one=new HashMap<>();
+                        one.put("title",m.group(1));
+                        one.put("url",m.group(2));
+                        one.put("time",m.group(3));
+                        one.put("source",m.group(4));
+                        newsData.add(one);
+                        input=input.substring(m.end());
+                        m=all.matcher(input);
+                    }
+                    /*
                     for(int i=0;i<3;i++)
                     {
                         m=pTitle.matcher(input);
@@ -172,6 +187,7 @@ public class forData {
                     {
                         Map<String,String> one=new HashMap<>();
                         one.put("title",m.group(1));
+                        input=input.substring(m.end());
 
                         m=pUrl.matcher(input);
                         if(m.find())
@@ -197,6 +213,7 @@ public class forData {
                         m=pTitle.matcher(input);
                         newsData.add(one);
                     }
+                    */
                     in.close();
 
                     return;

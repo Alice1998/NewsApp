@@ -57,6 +57,7 @@ public class HomeFragment extends Fragment implements RadioGroup.OnCheckedChange
         types[5]=(RadioButton)view.findViewById(R.id.News_6);
         types[6]=(RadioButton)view.findViewById(R.id.News_7);
         types[7]=(RadioButton)view.findViewById(R.id.News_8);
+        toButton[0]=0;
 
         mineNews[0]=new Fragment2();
         bundle[0]=new Bundle();
@@ -203,12 +204,12 @@ public class HomeFragment extends Fragment implements RadioGroup.OnCheckedChange
     @Override
     public void onPageSelected(int position) {
         // todo
+        tempOn=0;
         if(position==0)
         {
             rg.check(R.id.News_0);
             return;
         }
-        tempOn=position;
         rg.check(types[toButton[position]].getId());
     }
 

@@ -42,6 +42,19 @@
                     android:layout_height="150dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/setting" />
+                <ImageView
+                    android:id="@+id/img4"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/favor" />
+
+                <ImageView
+                    android:id="@+id/img5"
+                    android:layout_width="match_parent"
+                    android:layout_height="150dp"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/setting" />
             </ViewFlipper>
 
             <!--my为App的名字-->
