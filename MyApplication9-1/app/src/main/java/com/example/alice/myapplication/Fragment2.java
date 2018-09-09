@@ -4,6 +4,7 @@ package com.example.alice.myapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -37,11 +38,8 @@ public class Fragment2 extends Fragment implements RefreshListView.LoadListener 
         list = new ArrayList<>();
         Bundle bundle = getArguments();
         titleType=(String)bundle.get("cat");
-        allData = new forData(titleType);
-        for (int i = 1; i < 16; i++) {
-            list.add(allData.newsData.get(i));
-        }
-        shownNum = 15;
+        forweb(titleType);
+        //allData = new forData(titleType);
         adapter = new mySimpleAdapter(getActivity(), list, R.layout.news_item, new String[]{"title", "source", "time"}, new int[]{R.id.title, R.id.source, R.id.datetime});
         listview = (RefreshListView) view.findViewById(R.id.list_view);
         listview.setInterface(this);//loadlistener
@@ -50,6 +48,46 @@ public class Fragment2 extends Fragment implements RefreshListView.LoadListener 
         return view;
     }
 
+    private Handler handler = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what){
+                case 1:
+                    for (int i = 1; i < 16; i++) {
+                        list.add(allData.newsData.get(i));
+                    }
+                    shownNum = 15;
+                    break;
+                case 2:
+                    Toast.makeText(getContext(),"网络连接失败",Toast.LENGTH_SHORT).show();
+                    break;
+                case 3:
+                    Toast.makeText(getContext(),"服务器发生错误",Toast.LENGTH_SHORT).show();
+                    break;
+            }
+        }
+    };
+
+    private void forweb(final String input)
+    {
+        new Thread()
+        {
+            @Override
+            public void run()
+            {
+                try {
+                    allData = new forData(titleType);
+                    Message msg = Message.obtain();
+                    msg.what = 1;
+                    handler.sendMessage(msg);
+                }
+                catch (Exception e)
+                {
+                    handler.sendEmptyMessage(2);
+                }
+            }
+        }.start();
+    }
 
     @Override
     public void onLoad() {

@@ -31,13 +31,13 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         setContentView(R.layout.activity_main);
         initView();
 
-        StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+      /*  StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads().detectDiskWrites().detectNetwork()
                 .penaltyLog().build());
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
                 .detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
                 .penaltyLog().penaltyDeath().build());
-
+*/
     }
 
     //初始化数据

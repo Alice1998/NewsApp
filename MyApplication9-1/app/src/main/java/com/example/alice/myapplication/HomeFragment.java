@@ -48,6 +48,7 @@ public class HomeFragment extends Fragment implements RadioGroup.OnCheckedChange
         vi = view.findViewById(R.id.home_fl_view);
         forSearch=(Button)view.findViewById(R.id.search);
 
+
         types[0]=(RadioButton)view.findViewById(R.id.News_1);
         types[1]=(RadioButton)view.findViewById(R.id.News_2);
         types[2]=(RadioButton)view.findViewById(R.id.News_3);
