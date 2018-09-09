@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="15dp"
+    android:orientation="vertical"
+    tools:context="com.example.alice.myapplication.MainActivity">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <SearchView
+        android:id="@+id/searchView"
+        android:layout_weight="4"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="搜索内容" />
+    <Button
+        android:id="@+id/for_back"
+        android:layout_weight="1"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="返回"
+        android:background="@color/Alice_pink4"
+        android:gravity="center"
+        android:visibility="visible"/>
+</LinearLayout>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+</LinearLayout>

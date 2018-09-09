@@ -112,12 +112,14 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
                 allData.newsReads.add(0,mMap);
             }
             mMap.put("read","1");
+            adapter.notifyDataSetChanged();
             String Text = mMap.get("title");
             Intent forurl = new Intent(getActivity(), forWeb.class);
             forurl.putExtra("url", thisurl);
             forurl.putExtra("position",position);
+            forurl.putExtra("title",Text);
+            forurl.putExtra("love",0);
             startActivityForResult(forurl, 1);
-            adapter.notifyDataSetChanged();
             Toast.makeText(getActivity(), Text, Toast.LENGTH_SHORT).show();
         }
 

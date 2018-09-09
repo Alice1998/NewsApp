@@ -70,6 +70,7 @@ public class forSetting extends AppCompatActivity {
         mineMap = new TreeMap<>();
         for (String key: keywordsList) {
             mineMap.put(key, false);
+
         }
         //
         loadBlockListStatus();

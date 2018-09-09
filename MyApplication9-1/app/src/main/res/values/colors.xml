@@ -10,10 +10,13 @@
     <color name="Alice_blue2">#585eaa</color>
     <color name="Alice_blue3">#7F70AA</color>
     <color name="Alice_blue4">#6F6D85</color>
+    <color name="Alice_blue5">#afb4db</color>
+
 
     <color name="Alice_pink3">#585eaa</color>
     <color name="Alice_pink1">#afb4db</color>
     <color name="Alice_pink2">#8b95c9</color>
+    <color name="Alice_pink4">#9b95c9</color>
 
     <color name="backgroundHoloLight">#FFEEEEEE</color>
     <color name="categoryDisabledColor">#44000000</color>

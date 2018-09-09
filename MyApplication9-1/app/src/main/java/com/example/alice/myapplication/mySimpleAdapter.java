@@ -30,6 +30,8 @@ public class mySimpleAdapter extends SimpleAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         View view = super.getView(position, convertView, parent);
+        if(position>=listitem.size())
+            return view;
         if(listitem.get(position).get("read")=="1")
         {
             view.setBackgroundColor(colors1[0]);

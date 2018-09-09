@@ -26,8 +26,8 @@ import java.util.Map;
 
 public class FavorFragment extends Fragment implements RefreshListView.LoadListener {
     private RefreshListView listview;
-    private List<Map<String,String>> list;
-    private SimpleAdapter adapter;
+    static List<Map<String,String>> list;
+    private mySimpleAdapter adapter;
     private int shownitems;
 
 
@@ -35,13 +35,8 @@ public class FavorFragment extends Fragment implements RefreshListView.LoadListe
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
         View view=inflater.inflate(R.layout.fragment2,container,false);
-        list=new ArrayList<>();
-        for(int i=0;i<8&&i<forData.newsFavors.size();i++)
-        {
-            list.add(forData.newsFavors.get(i));
-            shownitems=i;
-        }
-        adapter=new SimpleAdapter(getActivity(),forData.newsFavors,R.layout.news_item,new String[]{"title","source","time"},new int[]{R.id.title,R.id.source,R.id.datetime});
+        list=new ArrayList<>(forData.newsFavors);
+        adapter=new mySimpleAdapter(getActivity(),list,R.layout.news_item,new String[]{"title","source","time"},new int[]{R.id.title,R.id.source,R.id.datetime});
         listview=(RefreshListView)view.findViewById(R.id.list_view);
         listview.setInterface(this);//loadlistener
         listview.setAdapter(adapter);
@@ -49,6 +44,12 @@ public class FavorFragment extends Fragment implements RefreshListView.LoadListe
         return view;
     }
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        listview.deferNotifyDataSetChanged();
+    }
 
     @Override
     public void onLoad() {
@@ -94,6 +95,8 @@ public class FavorFragment extends Fragment implements RefreshListView.LoadListe
             Intent forurl = new Intent(getActivity(), forWeb.class);
             forurl.putExtra("url", thisurl);
             forurl.putExtra("position",position);
+            forurl.putExtra("title",Text);
+            forurl.putExtra("love",1);
             startActivityForResult(forurl, 3);
             adapter.notifyDataSetChanged();
             Toast.makeText(getActivity(), Text, Toast.LENGTH_SHORT).show();
@@ -107,18 +110,14 @@ public class FavorFragment extends Fragment implements RefreshListView.LoadListe
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         int result = data.getExtras().getInt("favor");//得到新Activity 关闭后返回的数据
-        if(resultCode==4&&result==1)
+        if(resultCode==2&&result==0)
         {
             int position=data.getExtras().getInt("position");
             String url=data.getStringExtra("url");
-            if(!forData.hashFavor.contains(url))
-            {
-                Map<String, String> mMap = (Map<String, String>) adapter.getItem(position-1);
-                forData.hashFavor.add(url);
-                forData.newsFavors.add(0,mMap);
-            }
+            forData.newsFavors.remove(position-1);
+            forData.hashFavor.remove(url);
+            adapter.notifyDataSetChanged();
         }
-
 
     }
 

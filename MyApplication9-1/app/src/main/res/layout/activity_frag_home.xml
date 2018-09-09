@@ -4,15 +4,22 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <HorizontalScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+    <HorizontalScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="10"
+        android:scrollbars="none">
 
         <RadioGroup
             android:id="@+id/home_rg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            >
             <RadioButton
                 android:id="@+id/News_0"
                 android:layout_width="100dp"
@@ -106,11 +113,22 @@
                 android:gravity="center"
                 android:padding="20dp"
                 android:visibility="gone"/>
-
-
         </RadioGroup>
-
     </HorizontalScrollView>
+
+    <Button
+        android:id="@+id/search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="🔍"
+        android:background="@color/Alice_blue5"
+        android:gravity="center"
+        android:padding="20dp"
+        android:visibility="visible"/>
+
+    </LinearLayout>
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="5dp">

@@ -6,11 +6,11 @@
 
 
     <Switch
-        android:id="@+id/night_mode_switch"
+        android:id="@+id/or"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="16dp"
-        android:text="夜间模式"
+        android:text="收藏or已读"
         android:textSize="18sp" />
 
     <Button

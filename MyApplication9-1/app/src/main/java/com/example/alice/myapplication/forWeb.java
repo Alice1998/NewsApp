@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -75,8 +76,10 @@ public class forWeb extends Activity{
     private Button btnClose;
     private Button btnfavor;
     private Button btnshare;
+    private Button btnWeb;
     private String url;
     private int position;
+    private String title;
     private int favFlag=0;
     private static final String APP_CACAHE_DIRNAME = "/webcache";
 
@@ -89,12 +92,19 @@ public class forWeb extends Activity{
         webView=(MyWebView)findViewById(R.id.webview);
         progressBar=(ProgressBar)findViewById(R.id.progressbar);
         btnfavor=(Button)findViewById(R.id.btn_favor);
-        btnshare=(Button)findViewById(R.id.btn_share);
+        btnshare=(Button)findViewById(R.id.btn_shareText);
+        btnWeb=(Button)findViewById(R.id.btn_share);
 
         Intent data=getIntent();
         position=data.getIntExtra("position",1);
         url=data.getStringExtra("url");
+        title=data.getStringExtra("title");
+        favFlag=data.getIntExtra("love",2);
         webView.loadUrl(url);//加载url
+        if(favFlag==1)
+        {
+            btnfavor.setText("liked");
+        }
 
         //使用webview显示html代码
 //        webView.loadDataWithBaseURL(null,"<html><head><title> 欢迎您 </title></head>" +
@@ -135,7 +145,6 @@ public class forWeb extends Activity{
         webSettings.setDisplayZoomControls(false);
         btnClose.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-
                 Intent intent=new Intent();
                 intent.putExtra("favor",favFlag);
                 intent.putExtra("position",position);
@@ -148,14 +157,35 @@ public class forWeb extends Activity{
         btnfavor.setOnClickListener(new View.OnClickListener(){
 
             public void onClick(View v) {
-               favFlag=1;
+               if(favFlag!=1)
+               {
+                   favFlag=1;
+                   btnfavor.setText("liked");
+               }
+               else
+               {
+                   favFlag=0;
+                   btnfavor.setText("like");
+               }
+            }
+        });
+
+        btnWeb.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                //..******
+                Uri uri = Uri.parse (url);
+                Intent sendIntent=new Intent(Intent.ACTION_VIEW, uri);
+                startActivity(Intent.createChooser(sendIntent,"Sharing"));
             }
         });
 
         btnshare.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
-
-                //..******
+                Intent sendIntent = new Intent();
+                sendIntent.setAction(Intent.ACTION_SEND);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, title+" "+url);
+                sendIntent.setType("text/plain");
+                startActivity(Intent.createChooser(sendIntent,"Sharing"));
             }
         });
 
@@ -166,9 +196,13 @@ public class forWeb extends Activity{
                 if (dy<2&&dy>-2) {
                     btnClose.setVisibility(View.VISIBLE);
                     btnfavor.setVisibility(View.VISIBLE);
+                    btnshare.setVisibility(View.VISIBLE);
+                    btnWeb.setVisibility(View.VISIBLE);
                 } else {
                     btnClose.setVisibility(View.GONE);
                     btnfavor.setVisibility(View.GONE);
+                    btnshare.setVisibility(View.GONE);
+                    btnWeb.setVisibility(View.GONE);
                 }
             }
         });
