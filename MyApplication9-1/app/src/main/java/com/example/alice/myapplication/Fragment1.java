@@ -243,7 +243,7 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
             {
                 mMap.put("read","1");
                 allData.hashReads.add(thisurl);
-                allData.newsReads.add(0,mMap);
+                allData.newsReads.add(mMap);
             }
             adapter.notifyDataSetChanged();
             String Text = mMap.get("title");
@@ -272,7 +272,8 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
             {
                 Map<String, String> mMap = (Map<String, String>) adapter.getItem(position-1);
                 allData.hashFavor.add(url);
-                allData.newsFavors.add(0,mMap);
+                allData.newsFavors.add(mMap);
+
             }
         }
 

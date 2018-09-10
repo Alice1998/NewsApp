@@ -140,7 +140,7 @@ public class FavorFragment extends Fragment implements RefreshListView.LoadListe
             {
                 Map<String, String> mMap = (Map<String, String>) adapter.getItem(position-1);
                 forData.hashFavor.add(url);
-                forData.newsFavors.add(0,mMap);
+                forData.newsFavors.add(mMap);
             }
         }
 

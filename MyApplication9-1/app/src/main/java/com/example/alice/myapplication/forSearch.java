@@ -41,12 +41,18 @@ public class forSearch extends AppCompatActivity {
             data=forData.newsFavors;
         else if(inputtype==11)
             data=forData.newsReads;
-         else if(inputtype==-1||inputtype==0)
-            data=HomeFragment.fav.allData.newsData;
         else
-            data=HomeFragment.mineNews[inputtype].allData.newsData;
-        list=new LinkedList<>(data);
-        list.remove(0);
+        {
+            if(inputtype==-1)
+                data=HomeFragment.fav.allData.newsData;
+            else
+                data=HomeFragment.mineNews[inputtype].allData.newsData;
+            data.remove(0);
+        }
+        if(data==null)
+            list=new ArrayList<>();
+        else
+            list=new LinkedList<>(data);
         adapter=new mySimpleAdapter(this,list, R.layout.news_item, new String[]{"title", "source", "time"}, new int[]{R.id.title, R.id.source, R.id.datetime});
         lListView.setAdapter(adapter);
         lListView.setOnItemClickListener(new MyListener());
