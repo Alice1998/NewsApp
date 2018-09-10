@@ -24,6 +24,7 @@ import java.util.Set;
 
 public class SettingFragment extends Fragment {
 
+    static Boolean checked=false;
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = (View) View.inflate(getActivity(), R.layout.activity_settings, null);
@@ -55,7 +56,7 @@ public class SettingFragment extends Fragment {
         showPictures.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Boolean checked = ((Switch)v).isChecked();
+                checked = ((Switch)v).isChecked();
                 if(checked) //已读
                 {
                     FavorFragment.list.clear();

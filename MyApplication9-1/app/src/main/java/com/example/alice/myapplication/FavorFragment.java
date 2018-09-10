@@ -48,6 +48,17 @@ public class FavorFragment extends Fragment implements RefreshListView.LoadListe
     public void onResume()
     {
         super.onResume();
+        if(SettingFragment.checked) //已读
+        {
+            list.clear();
+            list.addAll(forData.newsReads);
+
+        }
+        else
+        {
+            list.clear();
+            list.addAll(forData.newsFavors);
+        }
         listview.deferNotifyDataSetChanged();
     }
 
