@@ -102,6 +102,16 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
                 setViewbtn(2);
             }
         });
+        pics4.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                setViewbtn(3);
+            }
+        });
+        pics5.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v) {
+                setViewbtn(4);
+            }
+        });
 
         return view;
     }
