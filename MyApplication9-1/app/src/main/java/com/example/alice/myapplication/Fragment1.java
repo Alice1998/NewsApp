@@ -241,10 +241,10 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
             String thisurl=mMap.get("url");
             if(!allData.hashReads.contains(thisurl))
             {
+                mMap.put("read","1");
                 allData.hashReads.add(thisurl);
                 allData.newsReads.add(0,mMap);
             }
-            mMap.put("read","1");
             adapter.notifyDataSetChanged();
             String Text = mMap.get("title");
             Intent forurl = new Intent(getActivity(), forWeb.class);

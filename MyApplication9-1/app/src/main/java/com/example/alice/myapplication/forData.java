@@ -175,45 +175,7 @@ public class forData {
                         input=input.substring(m.end());
                         m=all.matcher(input);
                     }
-                    /*
-                    for(int i=0;i<3;i++)
-                    {
-                        m=pTitle.matcher(input);
-                        if(m.find())
-                            input=input.substring(m.end(), input.length());
-                    }
-                    m=pTitle.matcher(input);
-                    while(m.find())
-                    {
-                        Map<String,String> one=new HashMap<>();
-                        one.put("title",m.group(1));
-                        input=input.substring(m.end());
 
-                        m=pUrl.matcher(input);
-                        if(m.find())
-                            one.put("url",m.group(1));
-                        else
-                            break;
-
-                        m=pTime.matcher(input);
-                        if(m.find())
-                            one.put("time",m.group(1));
-                        else
-                            break;
-
-                        m=pSource.matcher(input);
-                        if(m.find())
-                        {
-                            one.put("source",m.group(1));
-                            input=input.substring(m.end(), input.length());
-                        }
-                        else
-                            break;
-                        one.put("read","0");
-                        m=pTitle.matcher(input);
-                        newsData.add(one);
-                    }
-                    */
                     in.close();
 
                     return;

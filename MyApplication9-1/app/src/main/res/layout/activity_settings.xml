@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:padding="16dp"
         android:text="收藏or已读"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:visibility="invisible"/>
 
     <Button
         android:id="@+id/download"

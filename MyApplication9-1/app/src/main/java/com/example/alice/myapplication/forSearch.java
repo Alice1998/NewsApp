@@ -37,7 +37,11 @@ public class forSearch extends AppCompatActivity {
         backbtn=(Button) findViewById(R.id.for_back);
         Intent intent=getIntent();
         int inputtype=intent.getIntExtra("type",-1);
-        if(inputtype==-1||inputtype==0)
+        if(inputtype==10)
+            data=forData.newsFavors;
+        else if(inputtype==11)
+            data=forData.newsReads;
+         else if(inputtype==-1||inputtype==0)
             data=HomeFragment.fav.allData.newsData;
         else
             data=HomeFragment.mineNews[inputtype].allData.newsData;

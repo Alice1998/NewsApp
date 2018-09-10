@@ -50,26 +50,24 @@ public class SettingFragment extends Fragment {
                 Toast.makeText(getActivity(), "clear WebView Cache finished!", Toast.LENGTH_SHORT).show();
             }
         });
+/*
 
+    <Switch
+        android:id="@+id/or"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="收藏or已读"
+        android:textSize="18sp" />
 
         final Switch showPictures = (Switch)view.findViewById(R.id.or);
         showPictures.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 checked = ((Switch)v).isChecked();
-                if(checked) //已读
-                {
-                    FavorFragment.list.clear();
-                    FavorFragment.list.addAll(forData.newsReads);
 
-                }
-                else
-                {
-                    FavorFragment.list.clear();
-                    FavorFragment.list.addAll(forData.newsFavors);
-                }
             }
-        });
+        });*/
         return view;
     }
 

@@ -23,7 +23,7 @@ public class FragmentFactory {
                 fragment = new HomeFragment();
                 break;
             case 1:
-                fragment = new FavorFragment();
+                fragment = new FavororRead();
                 break;
             case 2:
                 fragment = new SettingFragment();
