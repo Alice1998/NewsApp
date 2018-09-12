@@ -52,7 +52,7 @@ public class forSearch extends AppCompatActivity {
         if(data==null)
             list=new ArrayList<>();
         else
-            list=new LinkedList<>(data);
+            list=new ArrayList<>(data);
         adapter=new mySimpleAdapter(this,list, R.layout.news_item, new String[]{"title", "source", "time"}, new int[]{R.id.title, R.id.source, R.id.datetime});
         lListView.setAdapter(adapter);
         lListView.setOnItemClickListener(new MyListener());
@@ -149,8 +149,8 @@ public class forSearch extends AppCompatActivity {
             String url=data.getStringExtra("url");
             if(!forData.hashFavor.contains(url))
             {
-                Map<String, String> mMap = (Map<String, String>) adapter.getItem(position-1);
-                mMap.put("read","0");
+                Map<String, String> mMap = (Map<String, String>) adapter.getItem(position);
+                mMap.put("read","1");
                 forData.hashFavor.add(url);
                 forData.newsFavors.add(0,mMap);
             }

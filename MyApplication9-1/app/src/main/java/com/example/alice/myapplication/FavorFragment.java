@@ -91,9 +91,9 @@ public class FavorFragment extends Fragment implements RefreshListView.LoadListe
 
             Map<String, String> mMap = (Map<String, String>) adapter.getItem(position-1);
             String thisurl=mMap.get("url");
+            mMap.put("read","1");
             if(!forData.hashReads.contains(thisurl))
             {
-                mMap.put("read","1");
                 forData.hashReads.add(thisurl);
                 forData.newsReads.add(0,mMap);
             }
@@ -113,7 +113,7 @@ public class FavorFragment extends Fragment implements RefreshListView.LoadListe
                 startActivityForResult(forurl, 4);
             }
             adapter.notifyDataSetChanged();
-            Toast.makeText(getActivity(), Text, Toast.LENGTH_SHORT).show();
+           // Toast.makeText(getActivity(), Text, Toast.LENGTH_SHORT).show();
         }
 
 
@@ -139,8 +139,10 @@ public class FavorFragment extends Fragment implements RefreshListView.LoadListe
             if(!forData.hashFavor.contains(url))
             {
                 Map<String, String> mMap = (Map<String, String>) adapter.getItem(position-1);
+                mMap.put("read","1");
                 forData.hashFavor.add(url);
-                forData.newsFavors.add(mMap);
+                forData.newsFavors.add(0,mMap);
+                adapter.notifyDataSetChanged();
             }
         }
 

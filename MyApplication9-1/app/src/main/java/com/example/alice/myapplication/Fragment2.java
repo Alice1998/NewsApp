@@ -39,10 +39,10 @@ public class Fragment2 extends Fragment implements RefreshListView.LoadListener 
         Bundle bundle = getArguments();
         titleType=(String)bundle.get("cat");
         allData = new forData(titleType);
-        for (int i = 1; i < 16; i++) {
+        for (int i = 1; i < 16&&i<allData.newsData.size(); i++) {
             list.add(allData.newsData.get(i));
+            shownNum = i;
         }
-        shownNum = 15;
 
         adapter = new mySimpleAdapter(getActivity(), list, R.layout.news_item, new String[]{"title", "source", "time"}, new int[]{R.id.title, R.id.source, R.id.datetime});
         listview = (RefreshListView) view.findViewById(R.id.list_view);
@@ -82,10 +82,15 @@ public class Fragment2 extends Fragment implements RefreshListView.LoadListener 
             public void run() {
                 list.clear();
                 allData.Refresh();
-                for (int i = 1; i < 16; i++) {
-                    list.add(allData.newsData.get(i));
+                if(allData.newsData.size()<list.size())
+                {
+                    listview.loadComplete();
+                    return;
                 }
-                shownNum = 15;
+                for (int i = 1; i < 16&&i<allData.newsData.size(); i++) {
+                    list.add(allData.newsData.get(i));
+                    shownNum = i;
+                }
                 adapter.notifyDataSetChanged();
                 listview.loadComplete();
 
@@ -102,9 +107,9 @@ public class Fragment2 extends Fragment implements RefreshListView.LoadListener 
 
             Map<String, String> mMap = (Map<String, String>) adapter.getItem(position-1);
             String thisurl=mMap.get("url");
+            mMap.put("read","1");
             if(!allData.hashReads.contains(thisurl))
             {
-                mMap.put("read","1");
                 allData.hashReads.add(thisurl);
                 allData.newsReads.add(mMap);
             }
@@ -133,8 +138,9 @@ public class Fragment2 extends Fragment implements RefreshListView.LoadListener 
             if(!allData.hashFavor.contains(url))
             {
                 Map<String, String> mMap = (Map<String, String>) adapter.getItem(position-1);
+                mMap.put("read","1");
                 allData.hashFavor.add(url);
-                allData.newsFavors.add(mMap);
+                allData.newsFavors.add(0,mMap);
             }
         }
 

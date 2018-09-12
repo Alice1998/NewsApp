@@ -67,11 +67,11 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
         pics3=(ImageView)view.findViewById(R.id.img3);
         pics4=(ImageView)view.findViewById(R.id.img4);
         pics5=(ImageView)view.findViewById(R.id.img5);
-        for (int i = 1; i < 16; i++) {
+        for (int i = 1; i < 16&&i<allData.newsData.size(); i++) {
             list.add(allData.newsData.get(i));
+            shownNum = i;
         }
-        shownNum = 15;
-        for(int i=0;i<5;i++)
+        for(int i=0;i<5&&i<forData.newsTitles.size();i++)
         {
             String url = forData.newsTitles.get(i).get("pic");
             String name=forData.newsTitles.get(i).get("title");
@@ -88,10 +88,10 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
         flipper.startFlipping();
 
         pics1.setOnClickListener(new View.OnClickListener(){
-                public void onClick(View v) {
-                   setViewbtn(0);
-                }
-            });
+            public void onClick(View v) {
+                setViewbtn(0);
+            }
+        });
         pics2.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 setViewbtn(1);
@@ -229,10 +229,15 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
             public void run() {
                 list.clear();
                 allData.Refresh();
-                for (int i = 1; i < 16; i++) {
-                    list.add(allData.newsData.get(i));
+                if(allData.newsData.size()<list.size())
+                {
+                    listview.loadComplete();
+                    return;
                 }
-                shownNum = 15;
+                for (int i = 1; i < 16&&i<allData.newsData.size(); i++) {
+                    list.add(allData.newsData.get(i));
+                    shownNum = i;
+                }
                 adapter.notifyDataSetChanged();
                 listview.loadComplete();
 
@@ -249,9 +254,9 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
 
             Map<String, String> mMap = (Map<String, String>) adapter.getItem(position-1);
             String thisurl=mMap.get("url");
+            mMap.put("read","1");
             if(!allData.hashReads.contains(thisurl))
             {
-                mMap.put("read","1");
                 allData.hashReads.add(thisurl);
                 allData.newsReads.add(mMap);
             }
@@ -263,7 +268,7 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
             forurl.putExtra("title",Text);
             forurl.putExtra("love",0);
             startActivityForResult(forurl, 1);
-            Toast.makeText(getActivity(), Text, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(getActivity(), Text, Toast.LENGTH_SHORT).show();
         }
 
 
@@ -281,8 +286,9 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
             if(!allData.hashFavor.contains(url))
             {
                 Map<String, String> mMap = (Map<String, String>) adapter.getItem(position-1);
+                mMap.put("read","1");
                 allData.hashFavor.add(url);
-                allData.newsFavors.add(mMap);
+                allData.newsFavors.add(0,mMap);
 
             }
         }

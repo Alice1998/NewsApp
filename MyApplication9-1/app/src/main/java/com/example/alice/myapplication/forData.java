@@ -63,8 +63,8 @@ public class forData {
     String patternSource;
     Pattern pSource;
     static myStatic urlMap;
-    static List<Map<String,String>> newsFavors=new LinkedList<>();
-    static List<Map<String,String>> newsReads=new LinkedList<>();
+    static List<Map<String,String>> newsFavors=new ArrayList<>();
+    static List<Map<String,String>> newsReads=new ArrayList<>();
     static HashSet<String> hashFavor=new HashSet<>();
     static HashSet<String> hashReads=new HashSet<>();
     int haveshown;
@@ -121,13 +121,13 @@ public class forData {
             }
             int index=input.indexOf(start);
             input=input.substring(index);
-            for(int i=0;i<5;i++)
+            for(int i=0;i<6;i++)
             {
                 Matcher m;
                 Map<String,String> one=new HashMap<>();
                 m=geturl.matcher(input);
                 if(m.find())
-                one.put("url",m.group(1));
+                    one.put("url",m.group(1));
                 m=getpic.matcher(input);
                 if(m.find())
                     one.put("pic","http://www.people.com.cn"+m.group(1));
@@ -153,37 +153,37 @@ public class forData {
     {
         String pattern="<title><!\\[CDATA\\[(.+)\\]\\]><\\/title>\n[ ]*<link>(.+)<\\/link>\n[ ]*<pubDate>(.+)<\\/pubDate>\n[ ]*<author>(.+)<\\/author>";
         Pattern all=Pattern.compile(pattern);
-                try{
-                    String input="";
-                    URL mine=new URL(u);
-                    BufferedReader in=new BufferedReader(new InputStreamReader(mine.openStream(),"UTF-8"));
-                    String inputline;
-                    while((inputline=in.readLine())!=null)
-                    {
-                        input+=inputline+"\n";
-                    }
-                    Matcher m;
-                    m=all.matcher(input);
-                    while(m.find())
-                    {
-                        Map<String,String> one=new HashMap<>();
-                        one.put("title",m.group(1));
-                        one.put("url",m.group(2));
-                        one.put("time",m.group(3));
-                        one.put("source",m.group(4));
-                        newsData.add(one);
-                        input=input.substring(m.end());
-                        m=all.matcher(input);
-                    }
+        try{
+            String input="";
+            URL mine=new URL(u);
+            BufferedReader in=new BufferedReader(new InputStreamReader(mine.openStream(),"UTF-8"));
+            String inputline;
+            while((inputline=in.readLine())!=null)
+            {
+                input+=inputline+"\n";
+            }
+            Matcher m;
+            m=all.matcher(input);
+            while(m.find())
+            {
+                Map<String,String> one=new HashMap<>();
+                one.put("title",m.group(1));
+                one.put("url",m.group(2));
+                one.put("time",m.group(3));
+                one.put("source",m.group(4));
+                newsData.add(one);
+                input=input.substring(m.end());
+                m=all.matcher(input);
+            }
 
-                    in.close();
+            in.close();
 
-                    return;
-                }
-                catch (Exception e)
-                {
-                    System.out.print(e);
-                }
+            return;
+        }
+        catch (Exception e)
+        {
+            System.out.print(e);
+        }
 
 
 

@@ -13,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.RadioGroup;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,13 +26,14 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
     Fragment[] fragments = new Fragment[3];
     //之前选中的页面游标值
     int beforeIndex = -1;
+    static int Clear=0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
 
-      StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
+    StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                 .detectDiskReads().detectDiskWrites().detectNetwork()
                 .penaltyLog().build());
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
@@ -93,5 +95,54 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         beforeIndex = index;
 
     }
+
+
+    public void clearWebViewCache(){
+
+        //清理Webview缓存数据库
+        try {
+            deleteDatabase("webview.db");
+            deleteDatabase("webviewCache.db");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        //WebView 缓存文件
+        File appCacheDir = new File(getFilesDir().getAbsolutePath()+"/webcache");
+        //Log.e(TAG, "appCacheDir path="+appCacheDir.getAbsolutePath());
+
+        File webviewCacheDir = new File(getCacheDir().getAbsolutePath()+"/webviewCache");
+       // Log.e(TAG, "webviewCacheDir path="+webviewCacheDir.getAbsolutePath());
+
+        //删除webview 缓存目录
+        if(webviewCacheDir.exists()){
+            deleteFile(webviewCacheDir);
+        }
+        //删除webview 缓存 缓存目录
+        if(appCacheDir.exists()){
+            deleteFile(appCacheDir);
+        }
+    }
+
+    public void deleteFile(File file) {
+
+        //Log.i(TAG, "delete file path=" + file.getAbsolutePath());
+
+        if (file.exists()) {
+            if (file.isFile()) {
+                file.delete();
+            } else if (file.isDirectory()) {
+                File files[] = file.listFiles();
+                for (int i = 0; i < files.length; i++) {
+                    deleteFile(files[i]);
+                }
+            }
+            file.delete();
+        } else {
+            //Log.e(TAG, "delete file no exists " + file.getAbsolutePath());
+        }
+    }
+
+
 
 }

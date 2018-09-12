@@ -20,7 +20,8 @@
                 android:id="@+id/viewflipper"
                 android:layout_width="match_parent"
                 android:layout_height="150dp"
-                android:flipInterval="2000">
+                android:flipInterval="2000"
+                android:background="@color/Alice_pink1">
 
                 <ImageView
                     android:id="@+id/img1"

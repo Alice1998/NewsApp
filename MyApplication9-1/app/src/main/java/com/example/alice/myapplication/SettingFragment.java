@@ -45,8 +45,7 @@ public class SettingFragment extends Fragment {
         clear.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                forWeb delete=new forWeb();
-                delete.clearWebViewCache();
+                MainActivity.Clear=1;
                 Toast.makeText(getActivity(), "clear WebView Cache finished!", Toast.LENGTH_SHORT).show();
             }
         });
