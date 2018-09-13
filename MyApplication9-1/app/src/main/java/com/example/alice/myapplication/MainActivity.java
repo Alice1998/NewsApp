@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+
 public class MainActivity extends AppCompatActivity implements RadioGroup.OnCheckedChangeListener {
 
     //定义布局内的RadioGroup控件
@@ -39,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements RadioGroup.OnChec
         StrictMode.setVmPolicy(new StrictMode.VmPolicy.Builder()
                 .detectLeakedSqlLiteObjects().detectLeakedClosableObjects()
                 .penaltyLog().penaltyDeath().build());
+
 
     }
 

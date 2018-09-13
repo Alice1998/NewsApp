@@ -266,6 +266,7 @@ public class Fragment1 extends Fragment implements RefreshListView.LoadListener 
             forurl.putExtra("url", thisurl);
             forurl.putExtra("position",position);
             forurl.putExtra("title",Text);
+            forurl.putExtra("source",mMap.get("source"));
             forurl.putExtra("love",0);
             startActivityForResult(forurl, 1);
             //Toast.makeText(getActivity(), Text, Toast.LENGTH_SHORT).show();

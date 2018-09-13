@@ -32,6 +32,7 @@ import java.util.Map;
 import static android.content.ContentValues.TAG;
 
 
+
 class MyWebView extends WebView {
 
     private OnScrollChangedCallback mOnScrollChangedCallback;
@@ -79,12 +80,14 @@ public class forWeb extends Activity{
     private Button btnfavor;
     private Button btnshare;
     private Button btnWeb;
+
     private String url;
     private int position;
     private String title;
     private int favFlag=0;
     private static final String APP_CACAHE_DIRNAME = "/webcache";
     private static String DB_PATH;
+    private static String source;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +107,7 @@ public class forWeb extends Activity{
         url=data.getStringExtra("url");
         title=data.getStringExtra("title");
         favFlag=data.getIntExtra("love",2);
+        source=data.getStringExtra("source");
         webView.loadUrl(url);//加载url
         if(favFlag==1)
         {
@@ -182,6 +186,7 @@ public class forWeb extends Activity{
             }
         });
 
+
         btnWeb.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v) {
                 //..******
@@ -195,7 +200,7 @@ public class forWeb extends Activity{
             public void onClick(View v) {
                 Intent sendIntent = new Intent();
                 sendIntent.setAction(Intent.ACTION_SEND);
-                sendIntent.putExtra(Intent.EXTRA_TEXT, title+" "+url);
+                sendIntent.putExtra(Intent.EXTRA_TEXT, title+" "+"来自 "+source+" "+url);
                 sendIntent.setType("text/plain");
                 startActivity(Intent.createChooser(sendIntent,"Sharing"));
             }

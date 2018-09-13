@@ -102,6 +102,7 @@ public class FavorFragment extends Fragment implements RefreshListView.LoadListe
             forurl.putExtra("url", thisurl);
             forurl.putExtra("position",position);
             forurl.putExtra("title",Text);
+            forurl.putExtra("source",mMap.get("source"));
             if(titleType.equals("favor"))
             {
                 forurl.putExtra("love",1);

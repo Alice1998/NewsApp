@@ -119,6 +119,7 @@ public class Fragment2 extends Fragment implements RefreshListView.LoadListener 
             forurl.putExtra("url", thisurl);
             forurl.putExtra("position",position);
             forurl.putExtra("title",Text);
+            forurl.putExtra("source",mMap.get("source"));
             forurl.putExtra("love",0);
             startActivityForResult(forurl, 1);
         }

@@ -130,9 +130,10 @@ public class forSearch extends AppCompatActivity {
             forurl.putExtra("url", thisurl);
             forurl.putExtra("position",position);
             forurl.putExtra("title",Text);
+            forurl.putExtra("source",mMap.get("source"));
             forurl.putExtra("love",0);
             startActivityForResult(forurl, 1);
-            Toast.makeText(forSearch.this, Text, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(forSearch.this, Text, Toast.LENGTH_SHORT).show();
         }
 
 
